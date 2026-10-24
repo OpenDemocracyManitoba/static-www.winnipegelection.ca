@@ -1,0 +1,272 @@
+/* HELLO! */
+
+:root {
+  --paper: #f6f4f0;
+  --ink: #171717;
+  --muted: #625f58;
+  --accent: #a12000;
+  --hover-accent: rgba(239, 91, 53, 0.08);
+  --rule: #1d1d1d;
+  --max-width: 1180px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+}
+
+a {
+  color: inherit;
+}
+
+.site-header,
+main,
+.site-footer {
+  width: min(calc(100% - 40px), var(--max-width));
+  margin-inline: auto;
+}
+
+.site-header {
+  min-height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 2px solid var(--rule);
+}
+
+.site-name {
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.year-label,
+.eyebrow,
+.election-date,
+.resource-number {
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.year-label {
+  color: var(--muted);
+}
+
+main {
+  flex: 1;
+}
+
+.intro {
+  padding: clamp(48px, 8vw, 90px) 0 clamp(24px, 8vw, 45px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.45fr);
+  grid-template-areas:
+    "eyebrow eyebrow"
+    "title ."
+    "title date";
+  column-gap: clamp(40px, 8vw, 120px);
+  align-items: end;
+}
+
+.eyebrow {
+  grid-area: eyebrow;
+  margin: 0 0 22px;
+  color: var(--accent);
+}
+
+h1 {
+  grid-area: title;
+  margin: 0;
+  font-size: clamp(3.6rem, 9vw, 8.6rem);
+  line-height: 0.9;
+  letter-spacing: -0.065em;
+  font-weight: 800;
+}
+
+.election-date {
+  grid-area: date;
+  margin: 0;
+  padding-top: 14px;
+  border-top: 2px solid var(--rule);
+}
+
+.link-info {
+  color: var(--accent);
+  font-style: italic;
+  margin-bottom: 2rem;
+  line-height: 1.6em;
+}
+
+.highlight {
+  background-color: var(--hover-accent);
+  padding: 0.25rem;
+}
+
+.official-links {
+  border-top: 2px solid var(--rule);
+}
+
+.resource-link {
+  min-height: 132px;
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 24px;
+  padding: 26px 0;
+  border-bottom: 2px solid var(--rule);
+  text-decoration: none;
+  transition:
+    background-color 140ms ease,
+    padding-inline 140ms ease;
+}
+
+.resource-number {
+  align-self: start;
+  padding-top: 7px;
+  color: var(--accent);
+}
+
+.resource-text {
+  display: grid;
+  gap: 8px;
+}
+
+.resource-title {
+  font-size: clamp(1.75rem, 4vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+  font-weight: 800;
+}
+
+.resource-description {
+  color: var(--muted);
+  font-size: 0.98rem;
+  line-height: 1.35;
+}
+
+.resource-arrow {
+  font-size: clamp(1.9rem, 4vw, 3.1rem);
+  line-height: 1;
+  transition: transform 140ms ease;
+}
+
+.resource-link:hover {
+  background: var(--hover-accent);
+  padding-inline: 16px;
+}
+
+.resource-link:hover .resource-arrow {
+  transform: translate(4px, -4px);
+}
+
+.resource-link:focus-visible,
+.site-name:focus-visible,
+.site-footer a:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 5px;
+}
+
+.site-footer {
+  padding: 42px 0 48px;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.site-footer a {
+  font-weight: 700;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  .site-header,
+  main,
+  .site-footer {
+    width: min(calc(100% - 28px), var(--max-width));
+  }
+
+  .site-header {
+    min-height: 72px;
+  }
+
+  .intro {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "eyebrow"
+      "title"
+      "date";
+    padding: 48px 0 24px;
+  }
+
+  h1 {
+    margin-bottom: 42px;
+  }
+
+  .resource-link {
+    min-height: 118px;
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    gap: 14px;
+    padding: 22px 0;
+  }
+
+  .resource-description {
+    font-size: 0.9rem;
+  }
+
+  .site-footer {
+    flex-direction: column;
+    padding: 34px 0 40px;
+  }
+}
+
+@media (max-width: 460px) {
+  .year-label {
+    display: none;
+  }
+
+  h1 {
+    font-size: clamp(3.15rem, 18vw, 5rem);
+  }
+
+  .resource-link {
+    grid-template-columns: 34px minmax(0, 1fr) auto;
+  }
+
+  .resource-title {
+    font-size: 1.7rem;
+  }
+
+  .resource-arrow {
+    font-size: 1.65rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resource-link,
+  .resource-arrow {
+    transition: none;
+  }
+}

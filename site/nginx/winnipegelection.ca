@@ -1,0 +1,224 @@
+# winnipegelection.ca redirects to the canonical www host.
+server {
+    listen 80;
+    server_name winnipegelection.ca;
+
+    return 301 https://www.winnipegelection.ca$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name winnipegelection.ca;
+
+    ssl_certificate /etc/letsencrypt/live/winnipegelection.ca/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/winnipegelection.ca/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    return 301 https://www.winnipegelection.ca$request_uri;
+}
+
+# HTTP requests for configured subdomains keep their hostname and move to HTTPS.
+server {
+    listen 80;
+    server_name
+        www.winnipegelection.ca
+        2022.winnipegelection.ca
+        2018.winnipegelection.ca
+        2014.winnipegelection.ca
+        dev.winnipegelection.ca;
+
+    return 301 https://$host$request_uri;
+}
+
+# Current www site. For now this continues to serve the 2022 WordPress site.
+server {
+    listen 443 ssl;
+    server_name www.winnipegelection.ca;
+
+    root /var/www/winnipegelection.ca/2022.winnipegelection.ca;
+    index index.php;
+
+    ssl_certificate /etc/letsencrypt/live/www.winnipegelection.ca/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/www.winnipegelection.ca/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    error_log /var/www/winnipegelection.ca/logs/www.error.log error;
+
+    fastcgi_buffers 16 16k;
+    fastcgi_buffer_size 32k;
+
+    location = /robots.txt {
+        try_files $uri $uri/ /index.php?$args;
+        log_not_found off;
+        access_log off;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.php?q=$uri&$args;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+        fastcgi_read_timeout 240;
+    }
+
+    # Increase timeout for the initial news scrape.
+    proxy_read_timeout 240;
+    proxy_connect_timeout 240;
+    proxy_send_timeout 240;
+}
+
+# Future 2026 temporary landing page for www.winnipegelection.ca.
+# To switch over, disable the active www block above and enable this block.
+#
+# server {
+#     listen 443 ssl;
+#     server_name www.winnipegelection.ca;
+#
+#     root /var/www/winnipegelection.ca/2018_landing;
+#     index index.html index.htm index.php;
+#
+#     ssl_certificate /etc/letsencrypt/live/www.winnipegelection.ca/fullchain.pem;
+#     ssl_certificate_key /etc/letsencrypt/live/www.winnipegelection.ca/privkey.pem;
+#     include /etc/letsencrypt/options-ssl-nginx.conf;
+#     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+#
+#     error_log /var/www/winnipegelection.ca/logs/www.error.log error;
+#
+#     location / {
+#         try_files $uri $uri/ =404;
+#     }
+#
+#     location ~ \.php$ {
+#         include snippets/fastcgi-php.conf;
+#         fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+#     }
+# }
+
+# 2022 Winnipeg Election archive.
+server {
+    listen 443 ssl;
+    server_name 2022.winnipegelection.ca;
+
+    root /var/www/winnipegelection.ca/2022.winnipegelection.ca;
+    index index.php;
+
+    ssl_certificate /etc/letsencrypt/live/2022.winnipegelection.ca/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/2022.winnipegelection.ca/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    error_log /var/www/winnipegelection.ca/logs/2022.error.log error;
+
+    fastcgi_buffers 16 16k;
+    fastcgi_buffer_size 32k;
+
+    location = /robots.txt {
+        try_files $uri $uri/ /index.php?$args;
+        log_not_found off;
+        access_log off;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.php?q=$uri&$args;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+        fastcgi_read_timeout 240;
+    }
+
+    # Increase timeout for the initial news scrape.
+    proxy_read_timeout 240;
+    proxy_connect_timeout 240;
+    proxy_send_timeout 240;
+}
+
+# 2018 Winnipeg Election archive.
+server {
+    listen 443 ssl;
+    server_name 2018.winnipegelection.ca;
+
+    root /var/www/winnipegelection.ca/2018.winnipegelection.ca;
+    index index.php;
+
+    ssl_certificate /etc/letsencrypt/live/2018.winnipegelection.ca/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/2018.winnipegelection.ca/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    error_log /var/www/winnipegelection.ca/logs/2018.error.log error;
+
+    fastcgi_buffers 16 16k;
+    fastcgi_buffer_size 32k;
+
+    location = /robots.txt {
+        allow all;
+        log_not_found off;
+        access_log off;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.php?q=$uri&$args;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+    }
+}
+
+# Development/staging site.
+server {
+    listen 443 ssl;
+    server_name dev.winnipegelection.ca;
+
+    root /var/www/winnipegelection.ca/2018_landing;
+    index index.html index.htm index.php;
+
+    ssl_certificate /etc/letsencrypt/live/dev.winnipegelection.ca/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/dev.winnipegelection.ca/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    error_log /var/www/winnipegelection.ca/logs/dev.error.log error;
+
+    fastcgi_buffers 16 16k;
+    fastcgi_buffer_size 32k;
+
+    location / {
+        auth_basic "Admin Only";
+        auth_basic_user_file /var/www/winnipegelection.ca/.htpasswd;
+        try_files $uri $uri/ /index.php?q=$uri&$args;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+    }
+}
+
+# 2014 Winnipeg Election static archive.
+server {
+    listen 443 ssl;
+    server_name 2014.winnipegelection.ca;
+
+    root /var/www/winnipegelection.ca/2014.winnipegelection.ca;
+    index index.html index.htm;
+
+    ssl_certificate /etc/letsencrypt/live/2014.winnipegelection.ca/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/2014.winnipegelection.ca/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    error_log /var/www/winnipegelection.ca/logs/2014.error.log error;
+
+    # Archived links omit .html, so try that extension before returning 404.
+    location / {
+        try_files $uri $uri.html $uri/ =404;
+    }
+}
