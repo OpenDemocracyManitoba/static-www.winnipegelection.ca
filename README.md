@@ -36,6 +36,15 @@ Snippet shapes removed (IDs and whitespace normalised):
   <script async src="https://www.googletagmanager.com/gtag/js?id=<ID>" ></script> <script> window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag("js", new Date()); gtag("config", "<ID>"); gtag("config", "<ID>"); </script>
   ```
 
+## Unrelated files removed
+
+Owner decision (Phase B, 2026-10-25): files that aren't part of the site were removed by `python3 -I drop_unrelated.py www.winnipegelection.ca --apply` (71 files). No remaining file references them.
+
+* `nginx/` (1 file): the server's nginx vhost config, not site content
+* `css/` (2 files): unused 2018 landing-page theme
+* `img/` (3 files): unused 2018 landing-page theme
+* `vendor/` (65 files): unused 2018 landing-page theme (Bootstrap, Font Awesome, jQuery, Simple Line Icons)
+
 ## Hosting
 
 Served from **Cloudflare Workers static assets** (Phase B of the olddroplet migration). `wrangler.jsonc`, `.gitignore`, `site/404.html` and this section are written by `hosting.py` (`python3 -I hosting.py www.winnipegelection.ca <preview|routed|final>`).
