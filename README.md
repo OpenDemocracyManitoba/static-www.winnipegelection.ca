@@ -1,5 +1,7 @@
 # www.winnipegelection.ca (static archive)
 
+> **Superseded 2026-10-26.** www.winnipegelection.ca now serves the 2026 address lookup built from [OpenDemocracyManitoba/WE-Address-Lookup-Prototype-2026](https://github.com/OpenDemocracyManitoba/WE-Address-Lookup-Prototype-2026), which deploys to the same Worker (`static-www-winnipegelection-ca`) and route. Don't deploy from this repo: it would put this placeholder page back.
+
 Static copy of **www.winnipegelection.ca**, taken from olddroplet (`odm-nginx-ruby-php-2018`, 159.203.24.194) on 2026-10-24, before the server was retired. Static landing page for winnipegelection.ca.
 
 `site/` is the served web root as it was on disk (73 files), minus the files listed below. No crawl was needed: this site was already static.
